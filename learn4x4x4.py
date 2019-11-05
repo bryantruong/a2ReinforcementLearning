@@ -82,33 +82,37 @@ def checkIfWinner(gameBoard, lastPlacedMatrix, lastPlacedRow, lastPlacedCol):
     return False
 
 
-def findBestPosition():
+def findBestPosition(listOfAvailablePositions):
     # TODO: use np.argmax(?) to find the index of the highest utility value, if there is a tie, choose one from random
     return -1, -1, -1
 
 
-def playGame(existingUtilityMatrix, gameBoard):
+def playGame(existingUtilityMatrix, newGameBoard):
     winningPlayer = None
     while True:
-        availablePositions = getAvailablePositions(gameBoard)
+        availablePositions = getAvailablePositions(newGameBoard)
         bestPosition = findBestPosition(availablePositions)
-        gameBoard[bestPosition] = 1
-        if checkIfWinner(gameBoard, bestPosition[0], bestPosition[1], bestPosition[2]):
+        newGameBoard[bestPosition] = 1
+        if checkIfWinner(newGameBoard, bestPosition[0], bestPosition[1], bestPosition[2]):
             winningPlayer = 1
             break
-        availablePositions = getAvailablePositions(gameBoard)
+        availablePositions = getAvailablePositions(newGameBoard)
         bestPosition = findBestPosition(availablePositions)
-        gameBoard[bestPosition] = -1
-        if checkIfWinner(gameBoard, bestPosition[0], bestPosition[1], bestPosition[2]):
+        newGameBoard[bestPosition] = -1
+        if checkIfWinner(newGameBoard, bestPosition[0], bestPosition[1], bestPosition[2]):
             winningPlayer = -1
             break
-
-        # TODO: Loop through gameboard and if gameboard at i,j,k == winningPlayer, increase its utility cell by 1
-
-
-
-
-
+    print(newGameBoard)
+    print(existingUtilityMatrix)
+    # TODO: Loop through gameboard and if gameboard at i,j,k == winningPlayer, increase its utility cell by 1
+    if winningPlayer == 1:
+        # Get the indices of the cells that the winningPlayer used
+        winningSquares = np.argwhere(utilityMatrix == 1)  # A list of cells indices [[matrix row col] [matrix row col]]
+    if winningPlayer == -1:
+        winningSquares = np.argwhere(utilityMatrix == -1)  # A list of cells indices [[matrix row col] [matrix row col]]
+    for winningIndex in winningSquares:
+        existingUtilityMatrix[winningIndex[0]][winningIndex[1]][winningIndex[2]] += 1
+    return existingUtilityMatrix
 
 
 
@@ -123,7 +127,13 @@ if __name__ == '__main__':
         numOfTrials3 = int(sys.argv[3])
         utilityMatrix = np.zeros((4, 4, 4))  # initialize a utilityMatrix
         # 4 matrices, each with 4 rows and 4 columns
-        print(utilityMatrix)
+
+        # # Dummy values to test
+        # utilityMatrix[0][0][2] = 1
+        # utilityMatrix[0][0][1] = -1
+        # utilityMatrix[3][2][1] = 1
+        # utilityMatrix[2][3][0] = -1
+        # print(utilityMatrix)
 
 
         for i in range(numOfTrials1):
