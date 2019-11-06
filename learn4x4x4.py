@@ -1,5 +1,6 @@
 import numpy as np
 import sys
+from random import randrange
 
 
 def getAvailablePositions(gameBoard):
@@ -18,7 +19,6 @@ def getAvailablePositions(gameBoard):
 
 
 def checkIfWinner(gameBoard, lastPlacedMatrix, lastPlacedRow, lastPlacedCol):
-
     # check along current matrix's row
     rowSum = 0
     for col in range(4):
@@ -82,38 +82,45 @@ def checkIfWinner(gameBoard, lastPlacedMatrix, lastPlacedRow, lastPlacedCol):
     return False
 
 
-def findBestPosition(listOfAvailablePositions):
-    # TODO: use np.argmax(?) to find the index of the highest utility value, if there is a tie, choose one from random
-    return -1, -1, -1
+def findBestPosition(currentUtilityMatrix, listOfAvailablePositions):
+    maxUtility = 0
+    bestPositions = []  # Stores the indices of the best positions, which may be multiple in case of ties
+    for position in listOfAvailablePositions:
+        if currentUtilityMatrix[position[0]][position[1]][position[2]] > maxUtility:
+            maxUtility = currentUtilityMatrix[position[0]][position[1]][position[2]]
+            bestPositions = [position]  # If it is better than what we currently have, replace the list
+        if currentUtilityMatrix[position[0]][position[1]][position[2]] == maxUtility:
+            bestPositions.append(position)
+
+    # Randomly pick an index of a max value
+    bestPosition = (bestPositions[randrange(len(bestPositions))])
+    return bestPosition
 
 
 def playGame(existingUtilityMatrix, newGameBoard):
     winningPlayer = None
     while True:
         availablePositions = getAvailablePositions(newGameBoard)
-        bestPosition = findBestPosition(availablePositions)
+        bestPosition = findBestPosition(existingUtilityMatrix, availablePositions)
         newGameBoard[bestPosition] = 1
         if checkIfWinner(newGameBoard, bestPosition[0], bestPosition[1], bestPosition[2]):
             winningPlayer = 1
             break
         availablePositions = getAvailablePositions(newGameBoard)
-        bestPosition = findBestPosition(availablePositions)
+        bestPosition = findBestPosition(existingUtilityMatrix, availablePositions)
         newGameBoard[bestPosition] = -1
         if checkIfWinner(newGameBoard, bestPosition[0], bestPosition[1], bestPosition[2]):
             winningPlayer = -1
             break
-    print(newGameBoard)
-    print(existingUtilityMatrix)
-    # TODO: Loop through gameboard and if gameboard at i,j,k == winningPlayer, increase its utility cell by 1
+    # Increase the squares of the winning player by one in the utility matrix
     if winningPlayer == 1:
         # Get the indices of the cells that the winningPlayer used
-        winningSquares = np.argwhere(utilityMatrix == 1)  # A list of cells indices [[matrix row col] [matrix row col]]
+        winningSquares = np.argwhere(newGameBoard == 1)  # A list of cells indices [[matrix row col] [matrix row col]]
     if winningPlayer == -1:
-        winningSquares = np.argwhere(utilityMatrix == -1)  # A list of cells indices [[matrix row col] [matrix row col]]
+        winningSquares = np.argwhere(newGameBoard == -1)  # A list of cells indices [[matrix row col] [matrix row col]]
     for winningIndex in winningSquares:
         existingUtilityMatrix[winningIndex[0]][winningIndex[1]][winningIndex[2]] += 1
     return existingUtilityMatrix
-
 
 
 if __name__ == '__main__':
@@ -128,26 +135,29 @@ if __name__ == '__main__':
         utilityMatrix = np.zeros((4, 4, 4))  # initialize a utilityMatrix
         # 4 matrices, each with 4 rows and 4 columns
 
-        # # Dummy values to test
+        # Dummy values to test
         # utilityMatrix[0][0][2] = 1
         # utilityMatrix[0][0][1] = -1
         # utilityMatrix[3][2][1] = 1
         # utilityMatrix[2][3][0] = -1
+        # utilityMatrix[1][1][1] = 1
         # print(utilityMatrix)
-
 
         for i in range(numOfTrials1):
             gameBoard = np.zeros((4, 4, 4))  # initialize a utilityMatrix
             utilityMatrix = playGame(utilityMatrix, gameBoard)
 
         # TODO: Divide each cell in utility matrix by numOfTrials1
+        print("CURRENT UTILITY MATRIX AFTER " + str(numOfTrials1) + " " + "TRIALS")
         print(utilityMatrix)
+        sys.exit()
         # TODO: Multiply each cell in utility matrix by numOfTrials1
         for i in range(numOfTrials1, numOfTrials2):
             gameBoard = np.zeros((4, 4, 4))  # initialize a utilityMatrix
             utilityMatrix = playGame(utilityMatrix, gameBoard)
 
         # TODO: Divide each cell in utility matrix by numOfTrials2
+        print("CURRENT UTILITY MATRIX AFTER " + str(numOfTrials2) + " " + "TRIALS")
         print(utilityMatrix)
         # TODO: Multiply each cell in utility matrix by numOfTrials2
 
@@ -156,4 +166,5 @@ if __name__ == '__main__':
             utilityMatrix = playGame(utilityMatrix, gameBoard)
 
         # TODO: Divide each cell in utility matrix by numOfTrials3
+        print("CURRENT UTILITY MATRIX AFTER " + str(numOfTrials3) + " " + "TRIALS")
         print(utilityMatrix)
