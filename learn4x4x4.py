@@ -2,6 +2,11 @@ import numpy as np
 import sys
 from random import randrange
 
+def showUtilityMatrixAveraged(gameBoard, numOfTrials):
+    # Use vectorize to apply our lambda (division) function to each cell
+    vectorizedFunction = np.vectorize(lambda element: element/numOfTrials)
+    averagedGameBoard = vectorizedFunction(gameBoard)
+    print(averagedGameBoard)
 
 def getAvailablePositions(gameBoard):
     """
@@ -315,35 +320,24 @@ if __name__ == '__main__':
         utilityMatrix = np.zeros((4, 4, 4))  # initialize a utilityMatrix
         # 4 matrices, each with 4 rows and 4 columns
 
-        # Dummy values to test
-        # utilityMatrix[0][0][2] = 1
-        # utilityMatrix[0][0][1] = -1
-        # utilityMatrix[3][2][1] = 1
-        # utilityMatrix[2][3][0] = -1
-        # utilityMatrix[1][1][1] = 1
-        # print(utilityMatrix)
-
+        # Run until first break point
         for i in range(numOfTrials1):
             gameBoard = np.zeros((4, 4, 4))  # initialize a utilityMatrix
             utilityMatrix = playGame(utilityMatrix, gameBoard)
 
-        # TODO: Divide each cell in utility matrix by numOfTrials1
         print("CURRENT UTILITY MATRIX AFTER " + str(numOfTrials1) + " " + "TRIALS")
-        print(utilityMatrix)
-        # TODO: Multiply each cell in utility matrix by numOfTrials1
+        showUtilityMatrixAveraged(utilityMatrix, numOfTrials1)
+
+        # Continue to run until second break point
         for i in range(numOfTrials1, numOfTrials2):
             gameBoard = np.zeros((4, 4, 4))  # initialize a utilityMatrix
             utilityMatrix = playGame(utilityMatrix, gameBoard)
-
-        # TODO: Divide each cell in utility matrix by numOfTrials2
         print("CURRENT UTILITY MATRIX AFTER " + str(numOfTrials2) + " " + "TRIALS")
-        print(utilityMatrix)
-        # TODO: Multiply each cell in utility matrix by numOfTrials2
+        showUtilityMatrixAveraged(utilityMatrix, numOfTrials2)
 
+        # Continue to run until third break point
         for i in range(numOfTrials2, numOfTrials3):
             gameBoard = np.zeros((4, 4, 4))  # initialize a utilityMatrix
             utilityMatrix = playGame(utilityMatrix, gameBoard)
-
-        # TODO: Divide each cell in utility matrix by numOfTrials3
         print("CURRENT UTILITY MATRIX AFTER " + str(numOfTrials3) + " " + "TRIALS")
-        print(utilityMatrix)
+        showUtilityMatrixAveraged(utilityMatrix, numOfTrials3)
