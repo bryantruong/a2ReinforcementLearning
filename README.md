@@ -8,4 +8,4 @@ to run.
 Example run command: `python3 learn4x4x4.py 100 500 2000`
 
 The program will then print the current utility values after `x` trials, `y` trials, then `z` trials.
-The link to our full project write-up is [here](https://drive.google.com/file/d/1JJjUUGKcMm5CGOmMRvQMzxvOkw_WUbRh/view).
+The link to our full project write-up is [here](https://drive.google.com/file/d/1GrmNMI2VjKUDBj9Sy383j93LnTNR_Ha2/view).
