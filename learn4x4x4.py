@@ -91,7 +91,7 @@ def checkForThreeInARow(lastPlacedMatrix, gameBoard, player, lastPlacedRow, last
                 return 2, index, 2
             elif gameBoard[3][index][3] == 0:
                 return 3, index, 3
-    if xDiagonalSum2 == 3*player:
+    if xDiagonalSum2 == 3 * player:
         for index in range(4):
             if gameBoard[3][index][0] == 0:
                 return 3, index, 0
@@ -101,7 +101,7 @@ def checkForThreeInARow(lastPlacedMatrix, gameBoard, player, lastPlacedRow, last
                 return 1, index, 2
             elif gameBoard[0][index][3] == 0:
                 return 0, index, 3
-    if yDiagonalSum1 == 3*player:
+    if yDiagonalSum1 == 3 * player:
         for index in range(4):
             if gameBoard[0][3][index] == 0:
                 return 0, 3, index
@@ -111,7 +111,7 @@ def checkForThreeInARow(lastPlacedMatrix, gameBoard, player, lastPlacedRow, last
                 return 2, 1, index
             elif gameBoard[3][0][index] == 0:
                 return 3, 0, index
-    if yDiagonalSum2 == 3*player:
+    if yDiagonalSum2 == 3 * player:
         for index in range(4):
             if gameBoard[0][0][index] == 0:
                 return 0, 0, index
@@ -159,8 +159,6 @@ def checkForThreeInARow(lastPlacedMatrix, gameBoard, player, lastPlacedRow, last
         elif gameBoard[3][0][3] == 0:
             return 3, 0, 3
     return None
-
-
 
 
 def checkIfWinner(gameBoard, lastPlacedMatrix, lastPlacedRow, lastPlacedCol):
@@ -230,6 +228,7 @@ def checkIfWinner(gameBoard, lastPlacedMatrix, lastPlacedRow, lastPlacedCol):
 def findBestPosition(currentUtilityMatrix, listOfAvailablePositions):
     maxUtility = -sys.maxsize - 1
     bestPositions = []  # Stores the indices of the best positions, which may be multiple in case of ties
+    # In the case of a tie, return
     if not listOfAvailablePositions:
         return None
     for position in listOfAvailablePositions:
