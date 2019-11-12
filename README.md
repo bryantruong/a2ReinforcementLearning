@@ -1,6 +1,6 @@
 # a2ReinforcementLearning
 ##### Bryan Truong, Shannon Goad
-COMP560 A2: Reinforcement Learning for 3d Tic Tac Toe with numPy and python3. 
+COMP560 A2: Reinforcement Learning for 3d Tic Tac Toe with NumPy and python3. You must have NumPy and Python 3.6 or greater to run the program.
 Clone Directory and run from the shell in the root project directory by calling `python3 learn4x4x4.py x y z`,
 where `x`, `y`, and `z` are non-negative, increasing integers that represent the number of trials
 to run.
